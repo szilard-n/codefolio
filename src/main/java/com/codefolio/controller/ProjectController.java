@@ -1,5 +1,6 @@
 package com.codefolio.controller;
 
+import com.codefolio.dto.ProjectDto;
 import com.codefolio.entity.Project;
 import com.codefolio.service.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProjectController {
 
+    // TODO: Remove userIds after auth is implemented
+
     private final ProjectService projectService;
 
     @PostMapping
@@ -38,6 +41,16 @@ public class ProjectController {
     public ResponseEntity<Void> assignProjectToUser(@PathVariable UUID projectId, @PathVariable UUID userId) {
         projectService.assignProjectToUser(projectId, userId);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/preview/{projectId}/{userId}")
+    public ResponseEntity<ProjectDto> previewProject(@PathVariable UUID projectId, @PathVariable UUID userId) {
+        return ResponseEntity.ok(projectService.projectPreview(projectId, userId));
+    }
+
+    @GetMapping("/{projectId}/{userId}")
+    public ResponseEntity<ProjectDto> getProject(@PathVariable UUID projectId, @PathVariable UUID userId) {
+        return ResponseEntity.ok(projectService.getProject(projectId, userId));
     }
 
 }

@@ -27,7 +27,7 @@ import java.util.UUID;
 @Table(name = "t_project")
 @Getter
 @Setter
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class Project {
@@ -61,14 +61,6 @@ public class Project {
 
     @Column(name = "updated_at")
     private Timestamp updatedAt;
-
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    @JoinColumn(name = "project_id")
-    @OrderBy(value = "index")
-    private List<Task> tasks = new ArrayList<>();
 
     @ManyToMany(mappedBy = "workList")
     @JsonIgnore // todo: remove this when dtos are created
