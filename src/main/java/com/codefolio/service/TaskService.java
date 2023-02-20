@@ -1,7 +1,9 @@
 package com.codefolio.service;
 
+import com.codefolio.dto.task.TaskDto;
 import com.codefolio.entity.Task;
 import com.codefolio.repostiory.TaskRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,17 +16,21 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
 
-    public List<Task> getTasksForUser(UUID project, UUID workerId, UUID creatorId) {
-        return taskRepository.findByCreatorOrWorkerId(project, workerId, creatorId);
+    protected List<Task> getTasksForUser(UUID projectId, UUID workerId, UUID creatorId) {
+        return taskRepository.findByCreatorOrWorkerId(projectId, workerId, creatorId);
     }
 
-    public List<Task> findByCreatorId(UUID projectId, UUID creatorId) {
-        return taskRepository.findByProjectIdAndCreatedBy(projectId, creatorId);
-    }
-
-    public void createTasks(Task task, UUID projectId, UUID createdBy) {
-        task.setProjectId(projectId);
-        task.setCreatedBy(createdBy);
-        taskRepository.save(task);
+    @Transactional
+    public void createTasks(List<TaskDto> taskDtos, UUID projectId, UUID createdBy) {
+        List<Task> newTasks = taskDtos.stream()
+                .map(taskDto -> Task.builder()
+                        .title(taskDto.title())
+                        .description(taskDto.description())
+                        .index(taskDto.index())
+                        .projectId(projectId)
+                        .createdBy(createdBy)
+                        .build())
+                .toList();
+        taskRepository.saveAll(newTasks);
     }
 }

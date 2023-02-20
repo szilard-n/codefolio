@@ -24,10 +24,12 @@ create table t_project
 create table t_task
 (
     id          uuid primary key,
+    title       varchar not null,
     description varchar not null,
     index       integer not null,
     project_id  uuid,
     created_by  uuid    not null,
+    completed boolean default false,
 
     constraint fk_project_id
         foreign key (project_id)
@@ -54,20 +56,4 @@ create table t_user_project
     constraint pk_user_project
         primary key (user_id, project_id)
 );
-
-create table t_user_task
-(
-    id        uuid primary key,
-    user_id   uuid,
-    task_id   uuid,
-    completed boolean,
-
-    constraint fk_user_id
-        foreign key (user_id)
-            references t_user (id),
-
-    constraint fk_task_id
-        foreign key (task_id)
-            references t_task (id)
-)
 

@@ -10,7 +10,6 @@ import java.util.UUID;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, UUID> {
-    List<Task> findByProjectIdAndCreatedBy(UUID projectId, UUID createdBy);
 
     @Query("select t from Task t " +
             "where t.projectId = :projectId and (t.createdBy = :workerId or t.createdBy = :creatorId) " +

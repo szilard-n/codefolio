@@ -1,6 +1,8 @@
 package com.codefolio.controller;
 
-import com.codefolio.dto.ProjectDto;
+import com.codefolio.dto.project.NewProjectDto;
+import com.codefolio.dto.project.ProjectDto;
+import com.codefolio.dto.project.ProjectPreviewDto;
 import com.codefolio.entity.Project;
 import com.codefolio.service.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -26,14 +28,14 @@ public class ProjectController {
 
     private final ProjectService projectService;
 
-    @PostMapping
-    public ResponseEntity<Project> createProject(@RequestBody Project project) {
+    @PostMapping("/{userId}")
+    public ResponseEntity<ProjectDto> createProject(@RequestBody NewProjectDto newProjectDto, @PathVariable UUID userId) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(projectService.createProject(project));
+                .body(projectService.createProject(newProjectDto, userId));
     }
 
     @GetMapping
-    public ResponseEntity<List<Project>> getAllProjects() {
+    public ResponseEntity<List<ProjectDto>> getAllProjects() {
         return ResponseEntity.ok(projectService.getAllProjects());
     }
 
@@ -43,14 +45,9 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/preview/{projectId}/{userId}")
-    public ResponseEntity<ProjectDto> previewProject(@PathVariable UUID projectId, @PathVariable UUID userId) {
-        return ResponseEntity.ok(projectService.projectPreview(projectId, userId));
-    }
-
     @GetMapping("/{projectId}/{userId}")
-    public ResponseEntity<ProjectDto> getProject(@PathVariable UUID projectId, @PathVariable UUID userId) {
-        return ResponseEntity.ok(projectService.getProject(projectId, userId));
+    public ResponseEntity<ProjectPreviewDto> previewProject(@PathVariable UUID projectId, @PathVariable UUID userId) {
+        return ResponseEntity.ok(projectService.projectPreview(projectId, userId));
     }
 
 }
