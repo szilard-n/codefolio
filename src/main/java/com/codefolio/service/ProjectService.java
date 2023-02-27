@@ -1,13 +1,12 @@
 package com.codefolio.service;
 
-import com.codefolio.dto.project.NewProjectDto;
+import com.codefolio.dto.project.NewProjectRequest;
 import com.codefolio.dto.project.ProjectDto;
-import com.codefolio.dto.project.ProjectPreviewDto;
+import com.codefolio.dto.project.ProjectPreviewResponse;
 import com.codefolio.entity.Project;
 import com.codefolio.entity.Task;
 import com.codefolio.entity.User;
 import com.codefolio.mapper.ProjectMapper;
-import com.codefolio.mapper.TaskMapper;
 import com.codefolio.repostiory.ProjectRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -24,17 +23,18 @@ import java.util.UUID;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
-    private final UserService userService;
+    private final AuthService authService;
     private final TaskService taskService;
     private final ProjectMapper projectMapper;
 
     @Transactional
-    public ProjectDto createProject(NewProjectDto newProjectDto, UUID createBy) {
+    public ProjectDto createProject(NewProjectRequest newProjectDto) {
+        User loggedInUser = authService.getAuthenticatedUser();
         Timestamp now = Timestamp.from(Instant.now());
         Project project = Project.builder()
                 .createdAt(now)
                 .updatedAt(now)
-                .createdBy(createBy)
+                .createdBy(loggedInUser.getId())
                 .category(newProjectDto.category())
                 .description(newProjectDto.description())
                 .title(newProjectDto.title())
@@ -43,7 +43,7 @@ public class ProjectService {
         projectRepository.save(project);
 
         if (!CollectionUtils.isEmpty(newProjectDto.tasks())) {
-            taskService.createTasks(newProjectDto.tasks(), project.getId(), createBy);
+            taskService.createTasks(newProjectDto.tasks(), project.getId(), loggedInUser.getId());
         }
 
         return projectMapper.map(project);
@@ -54,18 +54,17 @@ public class ProjectService {
     }
 
     @Transactional
-    public void assignProjectToUser(UUID projectId, UUID userId) {
-        User user = userService.findById(userId);
+    public void assignProjectToUser(UUID projectId) {
         Project project = getProjectById(projectId);
-
-        user.getWorkList().add(project);
+        User currentUser = authService.getAuthenticatedUser();
+        currentUser.getWorkList().add(project);
     }
 
-    public ProjectPreviewDto projectPreview(UUID projectId, UUID userId) {
-        User user = userService.findById(userId);
+    public ProjectPreviewResponse projectPreview(UUID projectId) {
         Project project = getProjectById(projectId);
+        User currentUser = authService.getAuthenticatedUser();
 
-        List<Task> tasks = taskService.getTasksForUser(project.getId(), user.getId(), project.getCreatedBy());
+        List<Task> tasks = taskService.getTasksForUser(project.getId(), currentUser.getId(), project.getCreatedBy());
         return projectMapper.map(project, tasks);
     }
 

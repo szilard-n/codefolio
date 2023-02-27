@@ -1,0 +1,14 @@
+spring:
+  jpa:
+    database: postgresql
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/codefolio_test
+    username: postgres
+    password: p0stgres
+security:
+  jwt:
+    tokenExpirationInHours: 1
+    secret: 68576D5A7134743777217A25432A462D4A614E645267556A586E327235753878
+server:
+  port: 8080

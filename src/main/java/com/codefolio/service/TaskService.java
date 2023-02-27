@@ -2,6 +2,7 @@ package com.codefolio.service;
 
 import com.codefolio.dto.task.TaskDto;
 import com.codefolio.entity.Task;
+import com.codefolio.entity.User;
 import com.codefolio.repostiory.TaskRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +16,16 @@ import java.util.UUID;
 public class TaskService {
 
     private final TaskRepository taskRepository;
+    private final AuthService authService;
 
     protected List<Task> getTasksForUser(UUID projectId, UUID workerId, UUID creatorId) {
         return taskRepository.findByCreatorOrWorkerId(projectId, workerId, creatorId);
+    }
+
+    @Transactional
+    public void createTasks(List<TaskDto> taskDtos, UUID projectId) {
+        final User loggedInUser = authService.getAuthenticatedUser();
+        createTasks(taskDtos,projectId, loggedInUser.getId());
     }
 
     @Transactional

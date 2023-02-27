@@ -1,0 +1,24 @@
+t_project:
+  - id: "00000000-4000-0000-0000-000000000000"
+    category: "FRONTEND"
+    title: "UI for car shop"
+    description: "UI for car shop"
+    created_by: "00000000-2000-0000-0000-000000000000"
+    created_at: "2023-02-27 21:55:24.302720"
+    updated_at: "2023-02-27 21:55:24.302720"
+
+t_task:
+  - id: "00000000-1000-0000-0000-000000000000"
+    title: "Title 0"
+    description: "Description 0"
+    index: 1
+    project_id: "00000000-4000-0000-0000-000000000000"
+    created_by: "00000000-2000-0000-0000-000000000000"
+    completed: false
+  - id: "00000000-2000-0000-0000-000000000000"
+    title: "Title 1"
+    description: "Description 1"
+    index: 2
+    project_id: "00000000-4000-0000-0000-000000000000"
+    created_by: "00000000-2000-0000-0000-000000000000"
+    completed: false

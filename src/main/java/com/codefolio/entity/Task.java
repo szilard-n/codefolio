@@ -50,4 +50,7 @@ public class Task {
     @Column(name = "created_by")
     private UUID createdBy;
 
+    @Column(name = "completed")
+    boolean completed;
+
 }

@@ -1,7 +1,7 @@
 package com.codefolio.mapper;
 
 import com.codefolio.dto.user.UserDto;
-import com.codefolio.dto.user.UserPreviewDto;
+import com.codefolio.dto.user.UserPreviewResponse;
 import com.codefolio.entity.User;
 import org.mapstruct.Mapper;
 
@@ -14,5 +14,5 @@ public interface UserMapper {
 
     List<UserDto> map(List<User> users);
 
-    UserPreviewDto mapToPreview(User user);
+    UserPreviewResponse mapToPreview(User user);
 }

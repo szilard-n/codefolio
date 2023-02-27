@@ -1,6 +1,6 @@
 package com.codefolio.controller;
 
-import com.codefolio.dto.task.TasksWrapperDto;
+import com.codefolio.dto.task.CreateTasksRequest;
 import com.codefolio.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/task")
+@RequestMapping("/api/v1/task")
 @RequiredArgsConstructor
 public class TaskController {
 
     private final TaskService taskService;
 
-    @PostMapping("/{projectId}/{userId}")
-    public ResponseEntity<Void> createTasks(@RequestBody TasksWrapperDto tasksWrapperDto, @PathVariable UUID projectId, @PathVariable UUID userId) {
-        taskService.createTasks(tasksWrapperDto.tasks(), projectId, userId);
+    @PostMapping("/{projectId}")
+    public ResponseEntity<Void> createTasks(@RequestBody CreateTasksRequest tasksWrapperDto, @PathVariable UUID projectId) {
+        taskService.createTasks(tasksWrapperDto.tasks(), projectId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

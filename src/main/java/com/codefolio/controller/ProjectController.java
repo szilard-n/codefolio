@@ -1,9 +1,8 @@
 package com.codefolio.controller;
 
-import com.codefolio.dto.project.NewProjectDto;
+import com.codefolio.dto.project.NewProjectRequest;
 import com.codefolio.dto.project.ProjectDto;
-import com.codefolio.dto.project.ProjectPreviewDto;
-import com.codefolio.entity.Project;
+import com.codefolio.dto.project.ProjectPreviewResponse;
 import com.codefolio.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,18 +19,16 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/project")
+@RequestMapping("/api/v1/project")
 @RequiredArgsConstructor
 public class ProjectController {
 
-    // TODO: Remove userIds after auth is implemented
-
     private final ProjectService projectService;
 
-    @PostMapping("/{userId}")
-    public ResponseEntity<ProjectDto> createProject(@RequestBody NewProjectDto newProjectDto, @PathVariable UUID userId) {
+    @PostMapping
+    public ResponseEntity<ProjectDto> createProject(@RequestBody NewProjectRequest newProjectDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(projectService.createProject(newProjectDto, userId));
+                .body(projectService.createProject(newProjectDto));
     }
 
     @GetMapping
@@ -39,15 +36,15 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.getAllProjects());
     }
 
-    @PutMapping("/assign/{projectId}/{userId}")
-    public ResponseEntity<Void> assignProjectToUser(@PathVariable UUID projectId, @PathVariable UUID userId) {
-        projectService.assignProjectToUser(projectId, userId);
+    @PutMapping("/assign/{projectId}")
+    public ResponseEntity<Void> assignProjectToUser(@PathVariable UUID projectId) {
+        projectService.assignProjectToUser(projectId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/{projectId}/{userId}")
-    public ResponseEntity<ProjectPreviewDto> previewProject(@PathVariable UUID projectId, @PathVariable UUID userId) {
-        return ResponseEntity.ok(projectService.projectPreview(projectId, userId));
+    @GetMapping("/{projectId}")
+    public ResponseEntity<ProjectPreviewResponse> previewProject(@PathVariable UUID projectId) {
+        return ResponseEntity.ok(projectService.projectPreview(projectId));
     }
 
 }

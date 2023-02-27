@@ -1,0 +1,5 @@
+t_user:
+  - id: "00000000-1000-0000-0000-000000000000"
+    username: "username"
+    email: "email@gmail.com"
+    password: "password"

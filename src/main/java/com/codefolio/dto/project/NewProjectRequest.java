@@ -1,18 +1,18 @@
 package com.codefolio.dto.project;
 
 import com.codefolio.dto.task.TaskDto;
+import jakarta.validation.constraints.NotBlank;
 
-import java.sql.Timestamp;
 import java.util.List;
-import java.util.UUID;
 
-public record ProjectPreviewDto(
-        UUID id,
+public record NewProjectRequest(
+        @NotBlank
         String category,
+
+        @NotBlank
         String title,
+
+        @NotBlank
         String description,
-        UUID createdBy,
-        Timestamp createdAt,
-        Timestamp updatedAt,
         List<TaskDto> tasks) {
 }

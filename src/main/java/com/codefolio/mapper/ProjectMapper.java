@@ -1,7 +1,7 @@
 package com.codefolio.mapper;
 
 import com.codefolio.dto.project.ProjectDto;
-import com.codefolio.dto.project.ProjectPreviewDto;
+import com.codefolio.dto.project.ProjectPreviewResponse;
 import com.codefolio.entity.Project;
 import com.codefolio.entity.Task;
 import org.mapstruct.Mapper;
@@ -15,5 +15,5 @@ public interface ProjectMapper {
 
     List<ProjectDto> map(List<Project> projects);
 
-    ProjectPreviewDto map(Project project, List<Task> tasks);
+    ProjectPreviewResponse map(Project project, List<Task> tasks);
 }

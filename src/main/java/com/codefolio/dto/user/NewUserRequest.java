@@ -1,6 +1,6 @@
 package com.codefolio.dto.user;
 
-public record NewUserDto(
+public record NewUserRequest(
         String username,
         String email,
         String password) {
