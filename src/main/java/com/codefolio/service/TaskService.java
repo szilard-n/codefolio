@@ -25,7 +25,7 @@ public class TaskService {
     @Transactional
     public void createTasks(List<TaskDto> taskDtos, UUID projectId) {
         final User loggedInUser = authService.getAuthenticatedUser();
-        createTasks(taskDtos,projectId, loggedInUser.getId());
+        createTasks(taskDtos, projectId, loggedInUser.getId());
     }
 
     @Transactional

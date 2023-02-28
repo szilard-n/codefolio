@@ -3,6 +3,7 @@ package com.codefolio.controller;
 import com.codefolio.dto.auth.AuthResponse;
 import com.codefolio.dto.auth.SignInRequest;
 import com.codefolio.dto.auth.SignUpRequest;
+import com.codefolio.dto.error.ApiErrorResponse;
 import com.codefolio.service.JwtService;
 import com.github.database.rider.core.api.dataset.CompareOperation;
 import com.github.database.rider.core.api.dataset.DataSet;
@@ -64,6 +65,20 @@ public class AuthControllerTest {
                 .post("/api/v1/auth/sign-up")
                 .then()
                 .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    @DisplayName("Should throw and error when creating a user with already existing username")
+    public void sigUpUser_internalError() {
+        var requestBody = new SignUpRequest("testUser", "email@gmail.com", "password");
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+                .post("/api/v1/auth/sign-up")
+                .then()
+                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+
     }
 
     @Test

@@ -6,6 +6,8 @@ import com.codefolio.dto.project.ProjectPreviewResponse;
 import com.codefolio.entity.Project;
 import com.codefolio.entity.Task;
 import com.codefolio.entity.User;
+import com.codefolio.exception.ExceptionFactory;
+import com.codefolio.exception.exceptions.ResourceNotFoundException;
 import com.codefolio.mapper.ProjectMapper;
 import com.codefolio.repostiory.ProjectRepository;
 import jakarta.transaction.Transactional;
@@ -21,6 +23,8 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class ProjectService {
+
+    private static final String PROJECT_NOT_FOUND = "exceptions.project.projectNotFount";
 
     private final ProjectRepository projectRepository;
     private final AuthService authService;
@@ -70,6 +74,6 @@ public class ProjectService {
 
     private Project getProjectById(UUID id) {
         return projectRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Project Not Found"));
+                .orElseThrow(() -> ExceptionFactory.create(ResourceNotFoundException.class, PROJECT_NOT_FOUND));
     }
 }
