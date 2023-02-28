@@ -2,6 +2,7 @@ package com.codefolio.handler;
 
 import com.codefolio.dto.error.ApiErrorResponse;
 import lombok.NonNull;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
  * Handler for request body validation errors.
  */
 @ControllerAdvice
+@Order(1)
 public class ArgumentValidationHandler extends ResponseEntityExceptionHandler {
 
     /**

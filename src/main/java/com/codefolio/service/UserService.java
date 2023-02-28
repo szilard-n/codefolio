@@ -30,7 +30,7 @@ public class UserService {
     private static final String USERNAME_IN_USE = "exceptions.user.usernameAlreadyInUse";
     private static final String USER_NOT_FOUND = "exceptions.user.userNotFount";
 
-    private static final String EMAIL_REGEX = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+    private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
